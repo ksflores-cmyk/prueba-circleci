@@ -1,0 +1,15 @@
+version: 2.1
+jobs:
+  prueba:
+    docker:
+      - image: cimg/base:stable
+    resource_class: medium
+    steps:
+      - run: date -u
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: ffmpeg -loglevel error -f lavfi -i testsrc=duration=10:size=1280x720:rate=30 -c:v libx264 -preset veryfast prueba.mp4
+      - run: ls -l prueba.mp4
+workflows:
+  prueba:
+    jobs:
+      - prueba
